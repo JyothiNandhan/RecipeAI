@@ -9,25 +9,20 @@ from request_context import context_summary
 
 def build_rag_prompt(
     request: RecipeRequest,
-    retrieved_recipes: list[dict[str, Any]],
+    recipe: dict[str, Any],
     request_context: dict[str, Any] | None = None,
 ) -> str:
     """
-    Build the RAG prompt with user intent, retrieved recipe context, and JSON-only output rules.
+    Build the RAG prompt with user intent, retrieved recipe context, and JSON-only output rules for a single recipe.
     """
-    context_blocks: list[str] = []
-    for index, recipe in enumerate(retrieved_recipes, 1):
-        block = (
-            f"Recipe {index}: {recipe['title']} {recipe['emoji']}\n"
-            f"  Time: {recipe['time']} minutes | Servings: {recipe['servings']} | Calories: {recipe['calories']} kcal\n"
-            f"  Tags: {', '.join(recipe['tags'])}\n"
-            f"  Ingredients: {', '.join(recipe['ingredients'])}\n"
-            f"  Description: {recipe['description']}\n"
-            f"  Steps: {'; '.join(recipe['steps'])}"
-        )
-        context_blocks.append(block)
-
-    context = "\n\n".join(context_blocks)
+    context = (
+        f"Recipe: {recipe['title']} {recipe['emoji']}\n"
+        f"  Time: {recipe['time']} minutes | Servings: {recipe['servings']} | Calories: {recipe['calories']} kcal\n"
+        f"  Tags: {', '.join(recipe['tags'])}\n"
+        f"  Ingredients: {', '.join(recipe['ingredients'])}\n"
+        f"  Description: {recipe['description']}\n"
+        f"  Steps: {'; '.join(recipe['steps'])}"
+    )
 
     if request.mode == "ingredients":
         user_request = f"I have these ingredients: {', '.join(request.ingredients or [])}. What can I cook?"
@@ -46,37 +41,35 @@ def build_rag_prompt(
     environment = context_summary(request_context) if request_context else "No time or weather context available."
 
     json_schema = json.dumps(
-        [
-            {
-                "title": "string",
-                "emoji": "string (one emoji)",
-                "time": "integer (minutes)",
-                "servings": "integer",
-                "calories": "integer",
-                "ingredients": ["list of strings"],
-                "steps": ["list of strings, ordered"],
-                "tags": ["list of strings"],
-                "description": "string (1-2 sentences)",
-                "match_reason": "string (why this fits the user's request)",
-                "dish_story": "string",
-                "flavor_profile": "string",
-                "key_technique": "string",
-                "pro_tips": ["list of strings"],
-                "ingredient_insights": "string",
-                "serving_suggestion": "string",
-                "estimated_difficulty": "string",
-                "estimated_time_breakdown": {
-                    "prep_minutes": "integer",
-                    "cook_minutes": "integer"
-                }
+        {
+            "title": "string",
+            "emoji": "string (one emoji)",
+            "time": "integer (minutes)",
+            "servings": "integer",
+            "calories": "integer",
+            "ingredients": ["list of strings"],
+            "steps": ["list of strings, ordered"],
+            "tags": ["list of strings"],
+            "description": "string (1-2 sentences)",
+            "match_reason": "string (why this fits the user's request)",
+            "dish_story": "string",
+            "flavor_profile": "string",
+            "key_technique": "string",
+            "pro_tips": ["list of strings"],
+            "ingredient_insights": "string",
+            "serving_suggestion": "string",
+            "estimated_difficulty": "string",
+            "estimated_time_breakdown": {
+                "prep_minutes": "integer",
+                "cook_minutes": "integer"
             }
-        ],
+        },
         indent=2,
     )
 
-    return f"""You are a world-class chef and passionate food writer with deep knowledge of global cuisines, cooking techniques, flavor science, and culinary history. You will be given a list of {len(retrieved_recipes)} recipes that have already been selected as good matches for the user. Your only job is to explain ALL {len(retrieved_recipes)} recipes beautifully and in detail so that the person reading feels genuinely excited to cook them and fully understands what they are making and why it will be delicious. You are not selecting or filtering recipes. You are enriching and explaining the recipes you are given.
+    return f"""You are a world-class chef and passionate food writer with deep knowledge of global cuisines, cooking techniques, flavor science, and culinary history. You will be given a single recipe that has already been selected as a good match for the user. Your only job is to explain it beautifully and in detail so that the person reading feels genuinely excited to cook it and fully understands what they are making and why it will be delicious. You are not selecting or filtering recipes. You are enriching and explaining the recipe you are given.
 
-For EVERY single recipe provided in the list below, you MUST return a corresponding JSON object with exactly these fields:
+You MUST return exactly one JSON object representing the enriched recipe with exactly these fields:
 
 dish_story: Three sentences on the cultural and historical background of this dish. Where it comes from, what tradition it belongs to, why it is cooked this way. Must contain a real specific fact, not a vague description. Never write a Wikipedia style summary.
 
@@ -94,7 +87,7 @@ estimated_difficulty: Return exactly one of these three values: beginner, interm
 
 estimated_time_breakdown: A JSON object with exactly two keys: prep_minutes as an integer and cook_minutes as an integer. These must be realistic and specific to this dish.
 
-Return only a valid raw JSON array containing exactly {len(retrieved_recipes)} objects (one for each recipe provided). No preamble. No markdown code fences. No explanation outside the JSON. If you return anything other than raw valid JSON the entire system will break.
+Return only a valid raw JSON object. Do not wrap it in an array. No preamble. No markdown code fences. No explanation outside the JSON. If you return anything other than raw valid JSON the entire system will break.
 
 QUALITY STANDARDS — these are non-negotiable:
 
