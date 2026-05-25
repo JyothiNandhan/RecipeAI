@@ -1,5 +1,7 @@
 # RecipeAI (RAG Recipe App)
 
+**Live Demo:** [https://recipe-kzsahs3u9-nandhu6754-8604s-projects.vercel.app/](https://recipe-kzsahs3u9-nandhu6754-8604s-projects.vercel.app/)
+
 RecipeAI is a full-stack Retrieval-Augmented Generation (RAG) application that provides personalized recipe recommendations based on the ingredients you have on hand, your dietary preferences, the current time of day, and your local weather.
 
 It uses a local vector database to retrieve semantically matching recipes from a curated dataset, and then uses a Large Language Model (Llama 3.1 70B via the UF NaviGator API) to synthesize the context and generate a final recommendation with an explanation of why it fits.
