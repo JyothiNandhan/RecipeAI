@@ -1,0 +1,91 @@
+<div class="page">
+  <header class="page-header">
+    <div class="page-hero">
+      <span class="page-icon">✨</span>
+      <div>
+        <h1>Daily <span class="gradient-text">Pick</span></h1>
+        <p>Let Llama surprise you with the perfect recipe for today — tuned to your local time and weather.</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="no-token-card" *ngIf="!hasToken && !loading">
+    <div class="no-token-icon">🔑</div>
+    <h3>NaviGator Token Required</h3>
+    <p>Set your NaviGator API token using the key icon in the top navbar, then come back here.</p>
+    <button type="button" class="primary-button" (click)="getDaily()" style="margin-top:0">Try Again</button>
+  </div>
+
+  <div class="recipe-grid" *ngIf="loading">
+    <app-skeleton type="card" [count]="1"></app-skeleton>
+  </div>
+
+  <app-error-banner [message]="error"></app-error-banner>
+
+  <article class="daily-card fade-in" *ngIf="recipe && !loading">
+    <div class="daily-hero">
+      <div class="daily-emoji-wrap">
+        <span class="daily-emoji" aria-hidden="true">{{ recipe.emoji }}</span>
+      </div>
+      <div class="daily-meta-header">
+        <span class="eyebrow">Today's Pick</span>
+        <h1>{{ recipe.title }}</h1>
+        <p class="daily-description">{{ recipe.description }}</p>
+        <div class="daily-stats">
+          <span class="stat"><span class="stat-icon">⏱</span> {{ recipe.time }} min</span>
+          <span class="stat"><span class="stat-icon">👥</span> {{ recipe.servings }} servings</span>
+          <span class="stat"><span class="stat-icon">🔥</span> {{ recipe.calories }} kcal</span>
+          <span class="badge-success" *ngIf="recipe.estimated_difficulty">{{ recipe.estimated_difficulty }}</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag" *ngFor="let tag of recipe.tags">{{ tag }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="match-reason" *ngIf="recipe.match_reason">
+      <span class="match-icon">🎯</span>
+      <p>{{ recipe.match_reason }}</p>
+    </div>
+
+    <div class="dish-story" *ngIf="recipe.dish_story">
+      <h3>📖 The Story Behind This Dish</h3>
+      <p>{{ recipe.dish_story }}</p>
+    </div>
+
+    <div class="two-col">
+      <div class="daily-columns">
+        <section>
+          <h3>🧂 Ingredients</h3>
+          <ul class="ingredients-list">
+            <li *ngFor="let ingredient of recipe.ingredients">{{ ingredient }}</li>
+          </ul>
+        </section>
+        <section>
+          <h3>👨‍🍳 Steps</h3>
+          <ol class="steps-list">
+            <li *ngFor="let step of recipe.steps">{{ step }}</li>
+          </ol>
+        </section>
+      </div>
+    </div>
+
+    <div class="technique-box" *ngIf="recipe.key_technique">
+      <h3>🍳 Key Technique</h3>
+      <p>{{ recipe.key_technique }}</p>
+    </div>
+
+    <div class="pro-tips" *ngIf="recipe.pro_tips?.length">
+      <h3>⭐ Pro Tips</h3>
+      <ul>
+        <li *ngFor="let tip of recipe.pro_tips">{{ tip }}</li>
+      </ul>
+    </div>
+
+    <div class="action-row">
+      <button type="button" class="primary-button" (click)="getDaily()" style="margin-top:0;width:auto;padding:0.75rem 2rem">
+        Get Another Pick ↺
+      </button>
+    </div>
+  </article>
+</div>

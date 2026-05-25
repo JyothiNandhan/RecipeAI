@@ -1,0 +1,28 @@
+<ng-container *ngFor="let i of countArray">
+  
+  <!-- Text Skeleton -->
+  <div *ngIf="type === 'text'" class="skeleton-text skeleton-shimmer"></div>
+
+  <!-- Title Skeleton -->
+  <div *ngIf="type === 'title'" class="skeleton-title skeleton-shimmer"></div>
+
+  <!-- Avatar Skeleton -->
+  <div *ngIf="type === 'avatar'" class="skeleton-avatar skeleton-shimmer"></div>
+
+  <!-- Card Skeleton -->
+  <div *ngIf="type === 'card'" class="skeleton-card">
+    <div class="skeleton-card-image skeleton-shimmer"></div>
+    <div class="skeleton-card-content">
+      <div class="skeleton-title skeleton-shimmer" style="width: 70%; margin-bottom: 12px;"></div>
+      <div class="skeleton-text skeleton-shimmer" style="width: 100%;"></div>
+      <div class="skeleton-text skeleton-shimmer" style="width: 90%;"></div>
+      <div class="skeleton-text skeleton-shimmer" style="width: 60%; margin-bottom: 16px;"></div>
+      <div class="skeleton-tag-row">
+        <div class="skeleton-tag skeleton-shimmer"></div>
+        <div class="skeleton-tag skeleton-shimmer" style="width: 40px;"></div>
+        <div class="skeleton-tag skeleton-shimmer" style="width: 70px;"></div>
+      </div>
+    </div>
+  </div>
+
+</ng-container>

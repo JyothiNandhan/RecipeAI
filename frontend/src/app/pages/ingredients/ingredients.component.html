@@ -1,0 +1,90 @@
+<div class="page">
+  <header class="page-header">
+    <div class="page-hero">
+      <span class="page-icon">🥕</span>
+      <div>
+        <h1>Find Recipes <span class="gradient-text">by Ingredients</span></h1>
+        <p>Choose what you have on hand. Llama 3.1 picks the best matches from our recipe database.</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="section card">
+    <h2 class="section-label">Common Ingredients</h2>
+    <div class="pill-grid">
+      <button
+        type="button"
+        class="ingredient-pill"
+        *ngFor="let ingredient of commonIngredients"
+        [class.selected]="selectedIngredients.has(ingredient)"
+        (click)="toggleIngredient(ingredient)"
+      >
+        {{ ingredient }}
+      </button>
+    </div>
+
+    <div class="custom-row">
+      <input
+        type="text"
+        [(ngModel)]="customInput"
+        placeholder="Add another ingredient..."
+        (keyup.enter)="addCustom()"
+        class="custom-input"
+        aria-label="Custom ingredient"
+      />
+      <button type="button" class="btn-secondary" (click)="addCustom()">Add</button>
+    </div>
+
+    <div class="custom-chips" *ngIf="customIngredients.length > 0">
+      <button
+        type="button"
+        class="custom-chip"
+        *ngFor="let ingredient of customIngredients"
+        (click)="removeCustom(ingredient)"
+        [attr.aria-label]="'Remove ' + ingredient"
+      >
+        {{ ingredient }} <span class="remove-x">×</span>
+      </button>
+    </div>
+
+    <div class="selected-info" *ngIf="selectedIngredients.size > 0">
+      <span class="badge-primary">{{ selectedIngredients.size }} ingredient{{ selectedIngredients.size > 1 ? 's' : '' }} selected</span>
+    </div>
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="findRecipes()"
+      [disabled]="selectedIngredients.size === 0 || !tokenService.hasToken() || loading"
+      id="find-recipes-btn"
+    >
+      <span *ngIf="loading" class="spinner"></span>
+      {{ loading ? 'Finding recipes...' : '✨ Find Recipes' }}
+    </button>
+
+    <p class="token-hint" *ngIf="!tokenService.hasToken()">
+      🔑 Set your NaviGator API token using the key icon in the top navbar.
+    </p>
+  </section>
+
+  <app-error-banner [message]="error"></app-error-banner>
+
+  <div class="info-bar" *ngIf="recipes.length > 0 && !loading">
+    📚 Found <strong>{{ retrievedCount }}</strong> matches in database → Llama selected the best for you
+  </div>
+
+  <div class="recipe-grid" *ngIf="loading">
+    <app-skeleton type="card" [count]="3"></app-skeleton>
+  </div>
+
+  <app-empty-state
+    *ngIf="!loading && !error && recipes.length === 0 && hasSearched"
+    title="No recipes found"
+    subtitle="Try selecting different ingredients or adding more options."
+    icon="🍳">
+  </app-empty-state>
+
+  <section class="recipe-grid fade-in" *ngIf="!loading && recipes.length > 0" aria-label="Recipe recommendations">
+    <app-recipe-card *ngFor="let recipe of recipes" [recipe]="recipe"></app-recipe-card>
+  </section>
+</div>

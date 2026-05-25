@@ -1,0 +1,71 @@
+<div class="auth-page">
+  <div class="auth-hero">
+    <div class="hero-content">
+      <div class="hero-logo">👨‍🍳</div>
+      <h1>RecipeAI</h1>
+      <p>Your AI-powered kitchen companion. Get personalized recipe recommendations powered by Llama 3.1 and real-time retrieval.</p>
+      <div class="hero-features">
+        <div class="feature">🔍 <span>RAG-powered search</span></div>
+        <div class="feature">🧠 <span>Llama 3.1 70B reasoning</span></div>
+        <div class="feature">🌦️ <span>Context-aware picks</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-form-panel">
+    <div class="auth-card fade-in">
+      <div class="auth-card-header">
+        <h2>Welcome back</h2>
+        <p>Sign in to your RecipeAI account</p>
+      </div>
+
+      <form (ngSubmit)="submit()" #f="ngForm" class="auth-form" novalidate>
+
+        <div class="field-group" [class.has-error]="error">
+          <label for="email">Email address</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          />
+        </div>
+
+        <div class="field-group">
+          <label for="password">Password</label>
+          <div class="password-wrapper">
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="Your password"
+              autocomplete="current-password"
+              required
+            />
+            <button type="button" class="eye-toggle" (click)="showPassword = !showPassword" aria-label="Toggle password visibility">
+              {{ showPassword ? '🙈' : '👁️' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="error-msg" *ngIf="error" role="alert">
+          ⚠️ {{ error }}
+        </div>
+
+        <button type="submit" class="btn-primary submit-btn" [disabled]="loading">
+          <span *ngIf="loading" class="spinner"></span>
+          {{ loading ? 'Signing in...' : 'Sign In' }}
+        </button>
+
+      </form>
+
+      <div class="auth-footer">
+        <p>Don't have an account? <a routerLink="/register">Create one free →</a></p>
+      </div>
+    </div>
+  </div>
+</div>

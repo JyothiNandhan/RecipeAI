@@ -1,0 +1,96 @@
+<nav class="navbar" aria-label="Main navigation">
+  <div class="navbar-inner container">
+
+    <!-- Brand -->
+    <a routerLink="/" class="brand" aria-label="RecipeAI Home">
+      <span class="brand-icon">👨‍🍳</span>
+      <span class="brand-name">RecipeAI</span>
+      <span class="badge-warning" *ngIf="isMockMode">Demo</span>
+    </a>
+
+    <!-- Desktop nav links -->
+    <ul class="nav-links" *ngIf="auth.isLoggedIn">
+      <li><a routerLink="/ingredients" routerLinkActive="active" class="nav-link">By Ingredients</a></li>
+      <li><a routerLink="/preferences" routerLinkActive="active" class="nav-link">By Preference</a></li>
+      <li><a routerLink="/daily"       routerLinkActive="active" class="nav-link">Daily Pick</a></li>
+      <li *ngIf="auth.isAdmin"><a routerLink="/admin/observability" routerLinkActive="active" class="nav-link nav-admin">⚙ Admin</a></li>
+    </ul>
+
+    <!-- Right actions -->
+    <div class="nav-actions">
+
+      <!-- Theme toggle -->
+      <button class="icon-btn" (click)="toggleTheme()" [title]="isDark ? 'Switch to light mode' : 'Switch to dark mode'" aria-label="Toggle theme">
+        <span>{{ isDark ? '☀️' : '🌙' }}</span>
+      </button>
+
+      <!-- NaviGator API Token -->
+      <div class="token-wrapper" *ngIf="auth.isLoggedIn">
+        <button class="icon-btn token-btn" (click)="toggleTokenPopover()"
+          [class.token-set]="tokenService.hasToken()"
+          [title]="tokenService.hasToken() ? 'NaviGator token set — click to change' : 'Set your NaviGator API token'"
+          aria-label="NaviGator API token">
+          <span>🔑</span>
+          <span class="token-dot" [class.active]="tokenService.hasToken()"></span>
+        </button>
+
+        <div class="token-popover" *ngIf="isTokenPopoverOpen" role="dialog" aria-label="NaviGator token">
+          <p class="popover-title">NaviGator API Token</p>
+          <p class="popover-sub">Used per-request only. Never stored on our servers.</p>
+          <input
+            type="password"
+            [(ngModel)]="tokenInput"
+            placeholder="sk-..."
+            class="token-input"
+            (keyup.enter)="saveToken()"
+            autocomplete="off"
+          />
+          <div class="popover-actions">
+            <button class="btn-ghost" (click)="clearToken()" *ngIf="tokenService.hasToken()">Clear</button>
+            <button class="btn-primary-sm" (click)="saveToken()">{{ tokenService.hasToken() ? 'Update' : 'Save' }}</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- User menu -->
+      <div class="user-menu-wrapper" *ngIf="auth.isLoggedIn">
+        <button class="avatar-btn" (click)="toggleUserMenu()" [attr.aria-expanded]="isUserMenuOpen" aria-label="User menu">
+          <span class="avatar">{{ userInitial }}</span>
+        </button>
+        <div class="user-dropdown" *ngIf="isUserMenuOpen">
+          <div class="dropdown-header">
+            <p class="user-email">{{ auth.currentUser?.email }}</p>
+            <span class="badge-primary" *ngIf="auth.isAdmin">Admin</span>
+          </div>
+          <hr class="dropdown-divider" />
+          <button class="dropdown-item danger" (click)="logout()">
+            <span>🚪</span> Sign out
+          </button>
+        </div>
+      </div>
+
+      <!-- Login button if not logged in -->
+      <a routerLink="/login" class="btn-nav-login" *ngIf="!auth.isLoggedIn">Sign In</a>
+
+      <!-- Mobile hamburger -->
+      <button class="hamburger" (click)="toggleMenu()" [attr.aria-expanded]="isMenuOpen" aria-label="Toggle menu">
+        <span class="bar" [class.open]="isMenuOpen"></span>
+        <span class="bar" [class.open]="isMenuOpen"></span>
+        <span class="bar" [class.open]="isMenuOpen"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" [class.open]="isMenuOpen" *ngIf="auth.isLoggedIn">
+    <a routerLink="/ingredients" class="mobile-link" (click)="isMenuOpen=false">By Ingredients</a>
+    <a routerLink="/preferences" class="mobile-link" (click)="isMenuOpen=false">By Preference</a>
+    <a routerLink="/daily"       class="mobile-link" (click)="isMenuOpen=false">Daily Pick</a>
+    <a routerLink="/admin/observability" class="mobile-link" (click)="isMenuOpen=false" *ngIf="auth.isAdmin">⚙ Admin</a>
+    <button class="mobile-link danger" (click)="logout()">🚪 Sign out</button>
+  </div>
+</nav>
+
+<div class="demo-banner" *ngIf="isMockMode">
+  <strong>Demo Mode</strong> — Showing simulated responses. Connect the backend for live AI recommendations.
+</div>

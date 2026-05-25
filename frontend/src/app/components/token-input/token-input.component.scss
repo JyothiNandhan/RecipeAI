@@ -1,0 +1,136 @@
+.token-card {
+  background: var(--surface-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.token-card.saved {
+  border-left: 3px solid var(--primary);
+}
+
+.token-card.invalid {
+  border-color: rgba(220, 38, 38, 0.65);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+}
+
+.token-section,
+.location-section {
+  align-items: center;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(180px, 1fr) minmax(280px, 2fr);
+}
+
+label {
+  align-items: center;
+  display: flex;
+  font-weight: 800;
+  gap: 0.4rem;
+}
+
+p {
+  color: var(--text-secondary);
+  margin: 0.25rem 0 0;
+}
+
+.info {
+  align-items: center;
+  background: #e7eef8;
+  border-radius: 50%;
+  color: #31527c;
+  display: inline-flex;
+  font-size: 0.75rem;
+  height: 18px;
+  justify-content: center;
+  width: 18px;
+}
+
+.token-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.input-wrap {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex;
+  min-height: 42px;
+  overflow: hidden;
+}
+
+input {
+  border: 0;
+  min-width: 220px;
+  outline: 0;
+  padding: 0.7rem 0.8rem;
+}
+
+.location-actions {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.location-actions input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  min-height: 42px;
+  min-width: 280px;
+}
+
+.icon-button {
+  background: transparent;
+  border: 0;
+  color: var(--primary-dark);
+  font-weight: 750;
+  min-height: 42px;
+  padding: 0 0.8rem;
+}
+
+a {
+  color: var(--primary-dark);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.saved-copy {
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .token-card {
+    gap: 1.25rem;
+  }
+
+  .token-section,
+  .location-section {
+    grid-template-columns: 1fr;
+  }
+
+  .token-actions,
+  .location-actions {
+    align-items: stretch;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .input-wrap,
+  input,
+  .location-actions input,
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+  }
+}

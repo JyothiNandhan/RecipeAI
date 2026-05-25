@@ -1,0 +1,52 @@
+{
+  "recipes": [
+    {
+      "title": "Classic Caesar Salad with Grilled Chicken",
+      "emoji": "🥬",
+      "time": 25,
+      "servings": 2,
+      "calories": 470,
+      "ingredients": [
+        "chicken",
+        "romaine lettuce",
+        "parmesan cheese",
+        "croutons",
+        "lemon",
+        "garlic",
+        "yogurt"
+      ],
+      "steps": [
+        "Season and grill chicken until cooked through.",
+        "Whisk yogurt, lemon, garlic, parmesan, salt, and pepper.",
+        "Chop romaine lettuce.",
+        "Toss lettuce with dressing.",
+        "Top with sliced chicken, croutons, and extra parmesan."
+      ],
+      "tags": [
+        "High protein",
+        "American",
+        "Quick",
+        "Salad"
+      ],
+      "description": "A crisp Caesar salad with grilled chicken and a lighter creamy dressing.",
+      "match_reason": "A classic American salad with a protein-packed twist.",
+      "dish_story": "The original Caesar salad was created in the 1920s by Italian-born chef Caesar Cardini, who immigrated to the United States and opened a restaurant in San Diego. The dish was initially made with romaine lettuce, garlic, Worcestershire sauce, lemon, eggs, and parmesan cheese, and was served as a main course. Over time, the recipe has evolved to include grilled chicken, which adds protein and texture to the dish.",
+      "flavor_profile": "This salad is a masterclass in umami flavors, with the savory taste of parmesan cheese and the richness of the dressing balanced by the brightness of lemon and the crunch of croutons. The grilled chicken adds a smoky depth to the dish, while the romaine lettuce provides a refreshing crunch.",
+      "key_technique": "The key to a great Caesar salad is in the preparation of the dressing, which must be emulsified to the right consistency. To achieve this, it's essential to whisk the ingredients slowly and carefully, adding the oil gradually to prevent the dressing from breaking. The dressing should be smooth and creamy, with a thick, velvety texture that coats the lettuce leaves evenly.",
+      "pro_tips": [
+        "Use high-quality ingredients, such as fresh parmesan cheese and homemade croutons, to elevate the flavor and texture of the salad.",
+        "Don't overdress the salad - the lettuce should be lightly coated with the dressing, but not soggy or dripping with sauce.",
+        "Add a sprinkle of parmesan cheese to the salad just before serving, to add a burst of salty flavor and texture."
+      ],
+      "ingredient_insights": "The combination of romaine lettuce, parmesan cheese, and croutons in a Caesar salad is a classic example of the 'flavor triangle' principle, where three ingredients with different flavor profiles and textures come together to create a harmonious and balanced taste experience. The bitterness of the lettuce is balanced by the richness of the cheese, while the crunch of the croutons adds a satisfying textural element to the dish.",
+      "serving_suggestion": "Serve the salad immediately after preparation, garnished with a sprinkle of parmesan cheese and a few croutons. A glass of dry white wine, such as Pinot Grigio or Sauvignon Blanc, pairs perfectly with the salad, cutting through the richness of the dressing and complementing the bright, citrusy flavors of the lemon and garlic.",
+      "estimated_difficulty": "beginner",
+      "estimated_time_breakdown": {
+        "prep_minutes": 10,
+        "cook_minutes": 15
+      }
+    }
+  ],
+  "mode": "ingredients",
+  "retrieved_count": 3
+}

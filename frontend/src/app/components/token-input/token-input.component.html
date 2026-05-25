@@ -1,0 +1,52 @@
+<section class="token-card" [class.saved]="saved" [class.invalid]="invalid">
+  <div class="token-section">
+    <div class="token-copy">
+      <label for="navigator-token">
+        NaviGator API Token
+        <span class="info" title="Your UF NaviGator Toolkit API key. Used per-request only, never stored permanently.">i</span>
+      </label>
+      <p *ngIf="!saved">Used for each request only. Kept in browser memory for this session.</p>
+      <p *ngIf="saved" class="saved-copy"><span aria-hidden="true">✓</span> Token saved for this session</p>
+    </div>
+
+    <div class="token-actions" *ngIf="!saved">
+      <div class="input-wrap">
+        <input
+          id="navigator-token"
+          [type]="visible ? 'text' : 'password'"
+          [(ngModel)]="tokenInput"
+          autocomplete="off"
+          placeholder="Paste your token"
+          (keyup.enter)="save()"
+        >
+        <button type="button" class="icon-button" (click)="toggleVisibility()" [attr.aria-label]="visible ? 'Hide token' : 'Show token'">
+          {{ visible ? 'Hide' : 'Show' }}
+        </button>
+      </div>
+      <button type="button" class="primary-button" (click)="save()" [disabled]="tokenInput.trim().length < 10">Save for session</button>
+      <a href="https://navigator.ai.ufl.edu" target="_blank" rel="noreferrer">Get your token at navigator.ai.ufl.edu</a>
+    </div>
+
+    <div class="token-actions saved-actions" *ngIf="saved">
+      <button type="button" class="secondary-button" (click)="clear()">Change token</button>
+    </div>
+  </div>
+
+  <div class="location-section">
+    <label for="weather-location">
+      Weather Location
+      <span class="info" title="City name used for token-free weather context. No latitude or longitude needed.">i</span>
+    </label>
+    <div class="location-actions">
+      <input
+        id="weather-location"
+        type="text"
+        [(ngModel)]="locationInput"
+        placeholder="City, State or City, Country"
+        (blur)="saveLocation()"
+        (keyup.enter)="saveLocation()"
+      >
+      <button type="button" class="secondary-button" (click)="saveLocation()">Use location</button>
+    </div>
+  </div>
+</section>

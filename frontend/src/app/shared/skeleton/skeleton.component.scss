@@ -1,0 +1,82 @@
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-border);
+  border-radius: var(--radius-md);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    animation: shimmer 1.5s infinite linear;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-text {
+  height: 16px;
+  margin-bottom: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-title {
+  height: 24px;
+  margin-bottom: var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+.skeleton-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+}
+
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 100%;
+}
+
+.skeleton-card-image {
+  height: 180px;
+  width: 100%;
+  border-radius: 0;
+}
+
+.skeleton-card-content {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.skeleton-tag-row {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: auto;
+}
+
+.skeleton-tag {
+  height: 24px;
+  width: 60px;
+  border-radius: var(--radius-full);
+}

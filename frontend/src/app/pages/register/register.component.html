@@ -1,0 +1,84 @@
+<div class="auth-page">
+  <div class="auth-hero">
+    <div class="hero-content">
+      <div class="hero-logo">👨‍🍳</div>
+      <h1>RecipeAI</h1>
+      <p>Join thousands of home cooks getting AI-powered recipe recommendations tailored to their ingredients, goals, and mood.</p>
+      <div class="hero-features">
+        <div class="feature">⚡ <span>Instant recommendations</span></div>
+        <div class="feature">🎯 <span>Personalized to you</span></div>
+        <div class="feature">🔒 <span>Your token stays yours</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-form-panel">
+    <div class="auth-card fade-in">
+      <div class="auth-card-header">
+        <h2>Create your account</h2>
+        <p>Free to use. No credit card required.</p>
+      </div>
+
+      <form (ngSubmit)="submit()" class="auth-form" novalidate>
+
+        <div class="field-group">
+          <label for="email">Email address</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            [(ngModel)]="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          />
+        </div>
+
+        <div class="field-group">
+          <label for="password">Password</label>
+          <div class="password-wrapper">
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="Min 8 characters"
+              autocomplete="new-password"
+              required
+            />
+            <button type="button" class="eye-toggle" (click)="showPassword = !showPassword" aria-label="Toggle password visibility">
+              {{ showPassword ? '🙈' : '👁️' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="confirm">Confirm password</label>
+          <input
+            id="confirm"
+            [type]="showPassword ? 'text' : 'password'"
+            name="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            placeholder="Repeat your password"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+
+        <div class="error-msg" *ngIf="error" role="alert">
+          ⚠️ {{ error }}
+        </div>
+
+        <button type="submit" class="btn-primary submit-btn" [disabled]="loading">
+          <span *ngIf="loading" class="spinner"></span>
+          {{ loading ? 'Creating account...' : 'Create Account' }}
+        </button>
+
+      </form>
+
+      <div class="auth-footer">
+        <p>Already have an account? <a routerLink="/login">Sign in →</a></p>
+      </div>
+    </div>
+  </div>
+</div>

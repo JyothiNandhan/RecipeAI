@@ -1,0 +1,88 @@
+<div class="page">
+  <header class="page-header">
+    <div class="page-hero">
+      <span class="page-icon">🎯</span>
+      <div>
+        <h1>Find Recipes <span class="gradient-text">by Preference</span></h1>
+        <p>Pick a dietary goal and set your constraints. Llama will match the perfect recipes.</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="section card">
+    <h2 class="section-label">Dietary Goal</h2>
+    <div class="goal-grid">
+      <button
+        type="button"
+        class="goal-card"
+        *ngFor="let goal of dietaryGoals"
+        [class.selected]="selectedGoal === goal.label"
+        (click)="selectGoal(goal.label)"
+      >
+        <span class="goal-icon" aria-hidden="true">{{ goal.icon }}</span>
+        <strong class="goal-label">{{ goal.label }}</strong>
+        <small class="goal-desc">{{ goal.desc }}</small>
+      </button>
+    </div>
+
+    <div class="controls">
+      <div class="control-row">
+        <div class="control-labels">
+          <span class="control-name">Max cooking time</span>
+          <strong class="control-value">{{ maxTime }} min</strong>
+        </div>
+        <input type="range" min="5" max="120" step="5" [(ngModel)]="maxTime" class="slider" aria-label="Max cooking time" />
+        <div class="slider-ticks">
+          <span>5m</span><span>30m</span><span>60m</span><span>90m</span><span>2h</span>
+        </div>
+      </div>
+
+      <div class="control-row">
+        <div class="control-labels">
+          <span class="control-name">Servings</span>
+          <strong class="control-value">{{ servings }} {{ servings === 1 ? 'person' : 'people' }}</strong>
+        </div>
+        <input type="range" min="1" max="8" step="1" [(ngModel)]="servings" class="slider" aria-label="Servings" />
+        <div class="slider-ticks">
+          <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span>
+        </div>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="findRecipes()"
+      [disabled]="!selectedGoal || !tokenService.hasToken() || loading"
+      id="find-preference-recipes-btn"
+    >
+      <span *ngIf="loading" class="spinner"></span>
+      {{ loading ? 'Finding recipes...' : '✨ Find Recipes' }}
+    </button>
+
+    <p class="token-hint" *ngIf="!tokenService.hasToken()">
+      🔑 Set your NaviGator API token using the key icon in the top navbar.
+    </p>
+  </section>
+
+  <app-error-banner [message]="error"></app-error-banner>
+
+  <div class="info-bar" *ngIf="recipes.length > 0 && !loading">
+    📚 Found <strong>{{ retrievedCount }}</strong> matches in database → Llama selected the best for you
+  </div>
+
+  <div class="recipe-grid" *ngIf="loading">
+    <app-skeleton type="card" [count]="3"></app-skeleton>
+  </div>
+
+  <app-empty-state
+    *ngIf="!loading && !error && recipes.length === 0 && hasSearched"
+    title="No recipes found"
+    subtitle="Try a different dietary goal or increase the time limit."
+    icon="🍽️">
+  </app-empty-state>
+
+  <section class="recipe-grid fade-in" *ngIf="!loading && recipes.length > 0" aria-label="Recipe recommendations">
+    <app-recipe-card *ngFor="let recipe of recipes" [recipe]="recipe"></app-recipe-card>
+  </section>
+</div>

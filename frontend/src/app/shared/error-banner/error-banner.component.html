@@ -1,0 +1,14 @@
+<div class="error-banner-container" *ngIf="message" [class.show]="message">
+  <div class="error-banner">
+    <div class="error-content">
+      <span class="error-icon" aria-hidden="true">⚠️</span>
+      <span class="error-message">{{ message }}</span>
+    </div>
+    <button *ngIf="retryable" 
+            class="retry-button" 
+            (click)="onRetry()"
+            aria-label="Try Again">
+      Try Again
+    </button>
+  </div>
+</div>
