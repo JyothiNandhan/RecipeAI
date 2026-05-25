@@ -6,6 +6,11 @@ RecipeAI is a full-stack Retrieval-Augmented Generation (RAG) application that p
 
 It uses a local vector database to retrieve semantically matching recipes from a curated dataset, and then uses a Large Language Model (Llama 3.1 70B via the UF NaviGator API) to synthesize the context and generate a final recommendation with an explanation of why it fits.
 
+## Key Features
+- **Parallel LLM Processing**: Uses `asyncio.gather` in FastAPI to concurrently fetch LLM explanations for multiple recipes, drastically cutting down response times.
+- **Responsive Angular 17 UI**: Features a beautiful, ultra-wide desktop interface with dynamic grids, dark mode, skeleton loaders, and toast notifications.
+- **Vercel + Ngrok Deployment**: A hybrid hosting architecture keeping heavy AI processes local while the frontend remains accessible globally.
+
 ## Architecture
 
 The project consists of two main parts:
