@@ -39,7 +39,10 @@ async def _enrich_recipe(
     Returns None if the LLM call fails or validation fails, so parallel execution doesn't fully crash.
     """
     prompt = build_rag_prompt(request, recipe, request_context=request_context)
-    
+
+    if trace:
+        trace.update("llm_prompts", {recipe["title"]: prompt})
+
     try:
         response = await client.chat.completions.create(
             model=LLM_MODEL,
@@ -63,6 +66,10 @@ async def _enrich_recipe(
         return None
 
     raw_text = response.choices[0].message.content or ""
+
+    if trace:
+        trace.update("llm_raw_responses", {recipe["title"]: raw_text})
+
     clean_text = strip_markdown_fences(raw_text)
 
     try:

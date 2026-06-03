@@ -318,9 +318,11 @@ def render_trace_ui(trace: dict[str, Any]) -> str:
 
     raw_response = llm.get("raw_response")
     parsed_json = llm.get("parsed_json")
+    llm_prompts: dict = trace.get("llm_prompts", {})
+    llm_raw_responses: dict = trace.get("llm_raw_responses", {})
     accepted_titles = post_processing.get("accepted_titles", [])
     rejected_titles = post_processing.get("rejected_titles", [])
-    llm_called = bool(raw_response or parsed_json or accepted_titles or rejected_titles)
+    llm_called = bool(raw_response or parsed_json or accepted_titles or rejected_titles or llm_raw_responses)
 
     candidate_rows = []
     kept_titles = set(vector_db.get("kept_titles", []))
@@ -376,10 +378,7 @@ def render_trace_ui(trace: dict[str, Any]) -> str:
     <h2>2. Augmentation</h2>
     <p><strong>Context recipes:</strong> {escape(', '.join(augmentation.get('context_recipe_titles', []) or []))}</p>
     <p><strong>Included fields:</strong> {escape(', '.join(augmentation.get('included_fields', []) or []))}</p>
-    <details open>
-      <summary>Full prompt sent to LLM</summary>
-      <pre>{_text_block(augmentation.get('prompt'))}</pre>
-    </details>
+    {''.join(f'<details><summary>Prompt → {escape(title)}</summary><pre>{_text_block(p)}</pre></details>' for title, p in llm_prompts.items()) if llm_prompts else '<p class="muted">No prompts captured.</p>'}
   </section>
 
   <section class="card">
@@ -388,18 +387,9 @@ def render_trace_ui(trace: dict[str, Any]) -> str:
       {_pill(f"model: {llm.get('model')}", 'info')}
       {_pill(f"temperature: {llm.get('temperature')}")}
       {_pill(f"max tokens: {llm.get('max_tokens')}")}
-      {_pill('raw response captured', 'success') if raw_response else _pill('no raw response', 'warning')}
+      {_pill('responses captured', 'success') if llm_raw_responses else _pill('no raw responses', 'warning')}
     </div>
-    <div class="split">
-      <div>
-        <h3>Raw LLM Response</h3>
-        <pre>{_text_block(raw_response)}</pre>
-      </div>
-      <div>
-        <h3>Cleaned / Parsed JSON</h3>
-        <pre>{_json_block(parsed_json if parsed_json is not None else llm.get('cleaned_response'))}</pre>
-      </div>
-    </div>
+    {''.join(f'<details><summary>Raw response → {escape(title)}</summary><pre>{_text_block(r)}</pre></details>' for title, r in llm_raw_responses.items()) if llm_raw_responses else '<p class="muted">No raw responses captured.</p>'}
   </section>
 
   <section class="card">
@@ -489,12 +479,26 @@ def render_trace_report(trace: dict[str, Any]) -> str:
             f"Model: {llm.get('model')}",
             f"Temperature: {llm.get('temperature')}",
             f"Max tokens: {llm.get('max_tokens')}",
-            "",
-            "Raw LLM response:",
-            str(llm.get("raw_response", "")),
-            "",
-            "Cleaned / parsed response:",
-            json.dumps(llm.get("parsed_json", llm.get("cleaned_response", "")), indent=2, ensure_ascii=False),
+        ]
+    )
+
+    llm_prompts_data: dict = trace.get("llm_prompts", {})
+    llm_raw_responses_data: dict = trace.get("llm_raw_responses", {})
+
+    if llm_prompts_data:
+        lines.append("\nPrompts sent to LLM:")
+        for title, p in llm_prompts_data.items():
+            lines.append(f"\n--- {title} ---")
+            lines.append(str(p))
+
+    if llm_raw_responses_data:
+        lines.append("\nRaw LLM responses:")
+        for title, r in llm_raw_responses_data.items():
+            lines.append(f"\n--- {title} ---")
+            lines.append(str(r))
+
+    lines.extend(
+        [
             "",
             "4. Post Processing",
             f"Rule: {post_processing.get('rule')}",
