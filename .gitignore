@@ -15,7 +15,7 @@ frontend/.angular/
 # IDEs and Misc
 .vscode/
 .idea/
-.codex/
+
 .DS_Store
 *.zip
 setup.txt
