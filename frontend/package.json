@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "ng serve --port 4200 --host 0.0.0.0",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "test": "ng test --watch=false --browsers=ChromeHeadless"
   },
   "dependencies": {
